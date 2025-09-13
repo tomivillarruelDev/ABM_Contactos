@@ -12,3 +12,5 @@ def obtener_conexion():
 def cerrar_conexion(conexion):
     if conexion:
         conexion.close()
+
+#HOLA
