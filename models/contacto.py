@@ -5,7 +5,6 @@ import re
 PATRON_EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 PATRON_TELEFONO = re.compile(r"^[\d+\-\(\)\s]{6,20}$")
 
-
 @dataclass
 class Contacto:
   id: Optional[int] = None
@@ -15,12 +14,14 @@ class Contacto:
   email: str = ""
 
   def __post_init__(self):
+    """Limpia y normaliza los datos después de la inicialización"""
     self.nombre = (self.nombre or "").strip()
     self.apellido = (self.apellido or "").strip()
     self.telefono = (self.telefono or "").strip()
     self.email = (self.email or "").strip().lower()
 
   def validate(self) -> Tuple[bool, List[str]]:
+    """Valida los datos del contacto. Retorna una tupla (es_valido, lista_de_errores)"""
     errores: List[str] = []
     if not self.nombre:
       errores.append("El nombre es obligatorio")
@@ -37,6 +38,7 @@ class Contacto:
     return (len(errores) == 0, errores)
 
   def to_tuple(self) -> Tuple[str, str, str, str]:
+    """Convierte el contacto a una tupla para operaciones en la BD"""
     return (self.nombre, self.apellido, self.telefono, self.email)
 
   @classmethod
@@ -51,6 +53,3 @@ class Contacto:
       telefono=row[3],
       email=row[4],
     )
-  
-    
-    
