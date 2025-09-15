@@ -1,4 +1,4 @@
-CREATE TABLE contactos (
+CREATE TABLE IF NOT EXISTS contactos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
     apellido TEXT NOT NULL,
