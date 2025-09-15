@@ -6,7 +6,8 @@ PATRON_EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 PATRON_TELEFONO = re.compile(r"^[\d+\-\(\)\s]{6,20}$")
 
 
-class Contacto: 
+@dataclass
+class Contacto:
   id: Optional[int] = None
   nombre: str = ""
   apellido: str = ""
@@ -19,31 +20,37 @@ class Contacto:
     self.telefono = (self.telefono or "").strip()
     self.email = (self.email or "").strip().lower()
 
-  def validate(self) -> Tuple[bool, list[str]]:
-    errores = []
+  def validate(self) -> Tuple[bool, List[str]]:
+    errores: List[str] = []
     if not self.nombre:
       errores.append("El nombre es obligatorio")
     if not self.apellido:
       errores.append("El apellido es obligatorio")
     if not self.telefono:
+      errores.append("El teléfono es obligatorio")
+    elif not PATRON_TELEFONO.match(self.telefono):
       errores.append("El número de teléfono tiene un formato inválido")
-    elif not EMAIL_RE.match(self.email):
+    if not self.email:
+      errores.append("El email es obligatorio")
+    elif not PATRON_EMAIL.match(self.email):
       errores.append("El email tiene un formato inválido")
     return (len(errores) == 0, errores)
 
-def to_tuple(self) ->:
-  return (self.nombre, self.apellido, self.telefono, self.email)
+  def to_tuple(self) -> Tuple[str, str, str, str]:
+    return (self.nombre, self.apellido, self.telefono, self.email)
 
-def from_row(cls, row):
-  if row is None: 
-    return None
-except cls(
-  id=row[0],
-  nombre=row[1],
-  apellido=row[2],
-  telefono=row[3],
-  email=[4],
-)
+  @classmethod
+  def from_row(cls, row: tuple):
+    """Crea un objeto Contacto desde una fila de la BD"""
+    if row is None:
+      return None
+    return cls(
+      id=row[0],
+      nombre=row[1],
+      apellido=row[2],
+      telefono=row[3],
+      email=row[4],
+    )
   
     
     
