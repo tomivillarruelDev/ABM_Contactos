@@ -51,10 +51,10 @@ class ContactoRepository:
         query = "DELETE FROM contactos WHERE id=?"
         conn = obtener_conexion()
         try:
-            cursor =conn.cursor()
+            cursor = conn.cursor()
             cursor.execute(query, (contacto.id,))
             conn.commit()
-            return True
+            return cursor.rowcount > 0
         finally:
             cerrar_conexion(conn)
 
