@@ -1,0 +1,2 @@
+tests/
+comando: python tests/demo_crud.py

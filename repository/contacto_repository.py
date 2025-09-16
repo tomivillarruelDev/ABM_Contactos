@@ -88,16 +88,17 @@ class ContactoRepository:
             cerrar_conexion(conn)
 
     def eliminar(self, contacto:Contacto):
-    """Elimina un contacto existente"""
-    if contacto.id is None:
-        raise ValueError("El id del contacto es obligatorio para eliminar")
-            
-    query = "DELETE FROM contactos WHERE id=?"
-    conn = obtener_conexion()
-    try:
-        cursor =conn.cursor()
-        cursor.execute(query, (contacto.id,))
-        conn.commit()
-        return True
-    finally:
-        cerrar_conexion(conn)
+        """Elimina un contacto existente"""
+        if contacto.id is None:
+            raise ValueError("El id del contacto es obligatorio para eliminar")
+
+        query = "DELETE FROM contactos WHERE id=?"
+        conn = obtener_conexion()
+        try:
+            cursor = conn.cursor()
+            cursor.execute(query, (contacto.id,))
+            conn.commit()
+            # rowcount > 0 confirma que se eliminó un registro
+            return cursor.rowcount > 0
+        finally:
+            cerrar_conexion(conn)
