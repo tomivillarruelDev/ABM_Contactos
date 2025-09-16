@@ -4,14 +4,18 @@ from models.contacto import Contacto
 class ContactoRepository:
     
     def agregar(self, contacto: Contacto):
-        """ Agrega un nuevo contacto a la base de datos"""
+        """Agrega un nuevo contacto y devuelve el ID."""
         query = "INSERT INTO contactos (nombre, apellido, telefono, email) VALUES (?, ?, ?, ?)"
         conn = obtener_conexion()
-        cursor = conn.cursor()
-        valores = contacto.to_tuple()
-        cursor.execute(query, valores)
-        conn.commit()
-        cerrar_conexion(conn)
+        try:
+            cursor = conn.cursor()
+            valores = contacto.to_tuple()  # (nombre, apellido, telefono, email)
+            cursor.execute(query, valores)
+            conn.commit()
+            return cursor.lastrowid  # ← devolvemos el ID nuevo
+        finally:
+            cerrar_conexion(conn)
+
 
     def obtener_todos(self):
         """Obtiene todos los contactos de la base de datos."""
@@ -86,7 +90,7 @@ class ContactoRepository:
             return cursor.rowcount > 0
         finally:
             cerrar_conexion(conn)
-
+            
     def eliminar(self, contacto:Contacto):
         """Elimina un contacto existente"""
         if contacto.id is None:
@@ -98,7 +102,6 @@ class ContactoRepository:
             cursor = conn.cursor()
             cursor.execute(query, (contacto.id,))
             conn.commit()
-            # rowcount > 0 confirma que se eliminó un registro
             return cursor.rowcount > 0
         finally:
             cerrar_conexion(conn)
