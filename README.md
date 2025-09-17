@@ -46,9 +46,6 @@ database/
 	conexion.py            # Abrir/cerrar conexión SQLite
 	contactos.db           # Base de datos (incluida)
 	schema.sql             # Script SQL para crear tabla(s)
-	init/                  # (reservado para seeds/migraciones)
-
-docs/                    # Documentación
 
 gui/
 	main_app.py            # Interfaz Tkinter
