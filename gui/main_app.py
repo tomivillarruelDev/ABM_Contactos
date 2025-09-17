@@ -215,10 +215,10 @@ class ContactosApp(tk.Tk):
         style.configure(
             "Modern.Treeview",
             font=tree_font,
-            background=self.colors["card"],
-            foreground=self.colors["text"],
-            rowheight=38,  # Más altura para mejor legibilidad
-            fieldbackground=self.colors["card"],
+            background="white",  # Fondo base blanco para mejor contraste
+            foreground="#212529",  # Texto oscuro
+            rowheight=40,  # Más altura para mejor legibilidad
+            fieldbackground="white",  # Fondo de campo blanco
             borderwidth=1,
             relief="solid",
             selectbackground=self.colors["primary"],
@@ -229,7 +229,9 @@ class ContactosApp(tk.Tk):
             "Modern.Treeview",
             background=[
                 ("selected", self.colors["primary"]),
-                ("!selected", self.colors["white"]),
+            ],
+            foreground=[
+                ("selected", "white"),
             ],
         )
 
@@ -470,19 +472,21 @@ class ContactosApp(tk.Tk):
             style="Modern.Treeview",
         )
 
-        # Encabezados con iconos
-        self.tree.heading("id", text="🆔 ID")
-        self.tree.heading("nombre", text="👤 Nombre")
-        self.tree.heading("apellido", text="👨 Apellido")
-        self.tree.heading("telefono", text="📞 Teléfono")
-        self.tree.heading("email", text="📧 Email")
+        # Encabezados con iconos (alineados con sus columnas)
+        self.tree.heading("id", text="🆔", anchor=tk.CENTER)
+        self.tree.heading("nombre", text="👤 Nombre", anchor=tk.W)
+        self.tree.heading("apellido", text="👨 Apellido", anchor=tk.W)
+        self.tree.heading("telefono", text="📞 Teléfono", anchor=tk.W)
+        self.tree.heading("email", text="📧 Email", anchor=tk.W)
 
-        # Configurar columnas con mejor ancho
-        self.tree.column("id", width=80, anchor=tk.CENTER, stretch=False)
-        self.tree.column("nombre", width=200, anchor=tk.W)
-        self.tree.column("apellido", width=200, anchor=tk.W)
-        self.tree.column("telefono", width=180, anchor=tk.W)
-        self.tree.column("email", width=280, anchor=tk.W)
+        # Configurar columnas con mejor ancho y alineación
+        self.tree.column("id", width=90, minwidth=80, anchor=tk.CENTER, stretch=False)
+        self.tree.column("nombre", width=150, minwidth=120, anchor=tk.W, stretch=True)
+        self.tree.column("apellido", width=150, minwidth=120, anchor=tk.W, stretch=True)
+        self.tree.column(
+            "telefono", width=150, minwidth=120, anchor=tk.W, stretch=False
+        )
+        self.tree.column("email", width=220, minwidth=180, anchor=tk.W, stretch=True)
 
         # Scrollbars modernos con estilos personalizados
         vsb = ttk.Scrollbar(
@@ -514,9 +518,9 @@ class ContactosApp(tk.Tk):
             "<Button-3>", self._on_right_click
         )  # Click derecho para menú contextual
 
-        # Configurar colores alternados para las filas
-        self.tree.tag_configure("evenrow", background="#f8f9fa")
-        self.tree.tag_configure("oddrow", background="white")
+        # Configurar colores alternados para las filas (estilo cebra)
+        self.tree.tag_configure("evenrow", background="#f8f9fa", foreground="#212529")
+        self.tree.tag_configure("oddrow", background="white", foreground="#212529")
 
     # ---------------------------------------------------------------------
     # Barra de estado
